@@ -7,15 +7,17 @@ const crypto = require("crypto");
 const GetAllBankAccounts = (props) => {
   if (parseInt(props.bankcount) > 0) {
     return (
-      <div>
+      <div className="bank-accounts-list">
         {props.banks.map((bank) => (
-          <p key={bank.key}>{bank.address}</p>
+          <div key={bank.key} className="bank-account-item blockchain-animation">
+            {bank.address}
+          </div>
         ))}
       </div>
     );
   } else {
     return (
-      <div>
+      <div className="text-center">
         <p>There are no verified Bank Accounts in this network!</p>
       </div>
     );
@@ -24,11 +26,12 @@ const GetAllBankAccounts = (props) => {
 
 const GetAllBankRequests = (props) => {
   return (
-    <div>
+    <div className="bank-accounts-list">
       {props.bankrequests.map((request) => (
-        <p key={request.key}>
-          {request.name} - {request.address}
-        </p>
+        <div key={request.key} className="bank-account-item">
+          <strong>{request.name}</strong>
+          <div>{request.address}</div>
+        </div>
       ))}
     </div>
   );
@@ -394,210 +397,225 @@ class App extends Component {
 
   render() {
     if (!this.state.web3) {
-      return <div>Loading Web3, accounts, and contract...</div>;
+      return <div className="loading-state">Loading Web3, accounts, and contract...</div>;
     }
 
     return (
       <div className="App">
-        <h2>Current Account is a {this.state.entity} entity</h2>
-        <h3>{this.state.account}</h3>
+        <div className="blockchain-animation">
+          <h2>KYC Blockchain Platform</h2>
+          <h3>{this.state.account}</h3>
+          <div className="text-center mb-2">
+            <span className="verification-status">
+              Current Account is a {this.state.entity} entity
+            </span>
+          </div>
+        </div>
+
         <div className="form-top-padding">
-        <fieldset>
-          <div className="form-title">
-            <strong>
-            Verified Organisation Addresses
-            </strong>
-            </div>
-          <GetAllBankAccounts
-            bankcount={this.state.bank_count}
-            banks={this.state.allbanks}
-          />
-        </fieldset>
-        </div>
-   
-        <div className="main-buttons-container form-top-padding form-bottom-padding">
-          <button
-            onClick={() => {
-              show("new-customer");
-            }}
-            id="new-customer-button"
-          >
-            New customer
-          </button>
-          <button
-            onClick={() => {
-              show("existing-customer");
-            }}
-            id="existing-customer-button"
-          >
-            Existing customer
-          </button>
-          <button
-            onClick={() => {
-              show("new-bank");
-            }}
-            id="new-bank-button"
-          >
-            New Organisation
-          </button>
-          <button
-            onClick={() => {
-              show("existing-bank");
-            }}
-            id="existing-bank-button"
-          >
-            View Organisation internal access
-          </button>
-        </div>
-
-      
-
-        <div className="new-customer form-top-padding">
-          <form action="." method="" onSubmit={this.create_customer}>
-            <fieldset>
-           
-                <div className="form-title form-bottom-padding">
-                <strong>Customer Registration Form (New customers only)</strong>
-                </div>
-
-              <p>
-                <label>Your Name </label>
-                <input type="text" onChange={this.myNameChangeHandler} />
-              </p>
-
-              <p>
-                <label>Your Aadhar </label>
-                <input type="text" onChange={this.myAadharChangeHandler} />
-              </p>
-
-              <p>
-                <label>Your Pan </label>
-                <input type="text" onChange={this.myPanChangeHandler} />
-              </p>
-
-              <p>
-                <label>
-                  Organisation Address you want to verify your data with{" "}
-                </label>
-                <input type="text" onChange={this.myVBankChangeHandler} />
-              </p>
-              <p>
-                <input type="submit" name="submit" value="Create Customer" />
-              </p>
-            </fieldset>
-          </form>
-        </div>
-
-        <div className="new-bank">
-          <form action="." method="" onSubmit={this.create_bank}>
-            <fieldset>
-            <div className="form-title form-bottom-padding">
-                <strong>Organisation registration form (New organisations only)</strong>
-                </div>
-              <p>
-                <label>Organisation Name </label>
-                <input type="text" onChange={this.myBankNameChangeHandler} />
-              </p>
-              <p>
-                <input type="submit" name="submit" value="Create bank" />
-              </p>
-            </fieldset>
-          </form>
-        </div>
-
-        <div className="existing-customer">
-          <form action="." method="" onSubmit={this.modify_data}>
-            <fieldset>
-              
-            <div className="form-title form-bottom-padding">
-                <strong>Update existing customer data (existing customers only)</strong>
-             </div>
-              
-              <p>
-                <label>New Name </label>
-                <input type="text" onChange={this.myNameChangeHandler} />
-              </p>
-              <p>
-                <label>New Aadhar </label>
-                <input type="text" onChange={this.myAadharChangeHandler} />
-              </p>
-              <p>
-                <label>New Pan </label>
-                <input type="text" onChange={this.myPanChangeHandler} />
-              </p>
-              <p>
-                <label>New Organisation Verify </label>
-                <input type="text" onChange={this.myVBankChangeHandler} />
-              </p>
-              <p>
-                <input type="submit" name="submit" value="Change Data" />
-              </p>
-            </fieldset>
-          </form>
-        </div>
-
-        <div className="existing-bank">
           <fieldset>
-          <div className="form-title form-bottom-padding">
-                <strong>Requests</strong>
-             </div>
-            <p>
-              <button onClick={this.viewRequests}>View user Requests</button>
-            </p>
-            <GetAllBankRequests bankrequests={this.state.bankrequests} />
-            <div className="form-top-padding">
-            <p>
-              <label>Request Address </label>
-              <input type="text" onChange={this.requestAddressChange} />
-            </p>
-
-            <p>
-              <button onClick={this.accept} className="accept-button">
-                Accept Request
-              </button>
-
-              <button onClick={this.reject} className="reject-button">
-                Reject Request
-              </button>
-            </p>
+            <div className="form-title">
+              <strong>Verified Organisation Addresses</strong>
             </div>
+            <GetAllBankAccounts
+              bankcount={this.state.bank_count}
+              banks={this.state.allbanks}
+            />
           </fieldset>
         </div>
 
-        <div className="existing-bank">
-          <br />
-          <div>
-            <label>
-              <strong>Verify Customer Data</strong>
-            </label>
-            <p>
-              <label>Address </label>
-              <input type="text" onChange={this.myDataChangeHandler} />
-            </p>
-            <p>
-              <label>Aadhar </label>
-              <input type="text" onChange={this.myData1ChangeHandler} />
-            </p>
-            <p>
-              <label>Pan </label>
-              <input type="text" onChange={this.myData2ChangeHandler} />
-            </p>
-            <button onClick={this.get}>Verify</button>
-            <p>Verification : {this.state.verified}</p>
-          </div>
+        <div className="main-buttons-container">
+          <button
+            onClick={() => show("new-customer")}
+            id="new-customer-button"
+            title="Register as a new customer"
+          >
+            <span>New Customer</span>
+            <span className="button-description">Register new account</span>
+          </button>
+          <button
+            onClick={() => show("existing-customer")}
+            id="existing-customer-button"
+            title="Access existing customer features"
+          >
+            <span>Existing Customer</span>
+            <span className="button-description">Manage your account</span>
+          </button>
+          <button
+            onClick={() => show("new-bank")}
+            id="new-bank-button"
+            title="Register as a new organisation"
+          >
+            <span>New Organisation</span>
+            <span className="button-description">Register organisation</span>
+          </button>
+          <button
+            onClick={() => show("existing-bank")}
+            id="existing-bank-button"
+            title="Access organisation features"
+          >
+            <span>Organisation Access</span>
+            <span className="button-description">Manage verifications</span>
+          </button>
         </div>
 
-        <div className="existing-customer">
-          <br />
-          <div>
-            <label>
-              <strong>View Customer Status</strong>
-            </label>
-            <p>
-              <button onClick={this.getmystatus}>Get Customer Status</button>
-            </p>
-            <p>Customer Status is: {this.state.status}</p>
-          </div>
+            <div className="new-customer">
+          <fieldset>
+            <div className="form-title">
+              <strong>Customer Registration Form</strong>
+              <div className="text-center">(New customers only)</div>
+            </div>
+              <form onSubmit={this.create_customer}>
+                <div className="form-group">
+                <label>Your Name</label>
+                <input type="text" onChange={this.myNameChangeHandler} placeholder="Enter your full name" />
+                </div>
+
+                <div className="form-group">
+                <label>Your Aadhar</label>
+                <input type="text" onChange={this.myAadharChangeHandler} placeholder="Enter your Aadhar number" />
+                </div>
+
+                <div className="form-group">
+                <label>Your Pan</label>
+                <input type="text" onChange={this.myPanChangeHandler} placeholder="Enter your PAN number" />
+                </div>
+
+                <div className="form-group">
+                <label>Organisation Address for Verification</label>
+                <input type="text" onChange={this.myVBankChangeHandler} placeholder="Enter organisation address" />
+                </div>
+
+              <input type="submit" value="Create Customer Account" />
+              </form>
+          </fieldset>
+        </div>
+
+        <div className="new-bank">
+          <fieldset>
+            <div className="form-title">
+              <strong>Organisation Registration</strong>
+              <div className="text-center">(New organisations only)</div>
+            </div>
+            <form onSubmit={this.create_bank}>
+              <div className="form-group">
+                <label>Organisation Name</label>
+                <input type="text" onChange={this.myBankNameChangeHandler} placeholder="Enter organisation name" />
+              </div>
+              <input type="submit" value="Register Organisation" />
+            </form>
+          </fieldset>
+        </div>
+
+            <div className="existing-customer">
+          <fieldset>
+            <div className="form-title">
+              <strong>Update Customer Data</strong>
+              <div className="text-center">(Existing customers only)</div>
+            </div>
+              <form onSubmit={this.modify_data}>
+                <div className="form-group">
+                <label>New Name</label>
+                <input type="text" onChange={this.myNameChangeHandler} placeholder="Enter new name" />
+              </div>
+
+              <div className="form-group">
+                <label>New Aadhar</label>
+                <input type="text" onChange={this.myAadharChangeHandler} placeholder="Enter new Aadhar number" />
+                </div>
+
+                <div className="form-group">
+                <label>New Pan</label>
+                <input type="text" onChange={this.myPanChangeHandler} placeholder="Enter new PAN number" />
+                </div>
+
+                <div className="form-group">
+                <label>New Organisation Verify</label>
+                <input type="text" onChange={this.myVBankChangeHandler} placeholder="Enter new organisation address" />
+                </div>
+
+              <input type="submit" value="Update Customer Data" />
+              </form>
+          </fieldset>
+                </div>
+
+        <div className="existing-bank">
+          <fieldset>
+            <div className="form-title">
+              <strong>Customer Requests Management</strong>
+            </div>
+            <div className="text-center mb-2">
+              <button onClick={this.viewRequests} className="blockchain-animation">
+                View Customer Requests
+              </button>
+            </div>
+            
+            <GetAllBankRequests bankrequests={this.state.bankrequests} />
+            
+            <div className="form-top-padding">
+              <div className="form-group">
+                <label>Request Address</label>
+                <input type="text" onChange={this.requestAddressChange} placeholder="Enter request address" />
+              </div>
+
+              <div className="text-center mt-2">
+                <button onClick={this.accept} className="accept-button">
+                  Accept Request
+                </button>
+                <button onClick={this.reject} className="reject-button">
+                  Reject Request
+                </button>
+              </div>
+            </div>
+          </fieldset>
+              </div>
+
+        <div className="existing-bank mt-2">
+          <fieldset>
+            <div className="form-title">
+              <strong>Customer Data Verification</strong>
+            </div>
+            <div className="form-group">
+              <label>Customer Address</label>
+              <input type="text" onChange={this.myDataChangeHandler} placeholder="Enter customer address" />
+            </div>
+            <div className="form-group">
+              <label>Aadhar Number</label>
+              <input type="text" onChange={this.myData1ChangeHandler} placeholder="Enter Aadhar number" />
+            </div>
+            <div className="form-group">
+              <label>PAN Number</label>
+              <input type="text" onChange={this.myData2ChangeHandler} placeholder="Enter PAN number" />
+            </div>
+            <div className="text-center mt-2">
+              <button onClick={this.get} className="blockchain-animation">
+                Verify Customer Data
+              </button>
+            </div>
+            {this.state.verified && (
+              <div className={`verification-status ${this.state.verified === "Success" ? "verification-success" : "verification-fail"}`}>
+                Verification Status: {this.state.verified}
+              </div>
+            )}
+          </fieldset>
+        </div>
+
+        <div className="existing-customer mt-2">
+          <fieldset>
+            <div className="form-title">
+              <strong>Customer Status Check</strong>
+            </div>
+            <div className="text-center">
+              <button onClick={this.getmystatus} className="blockchain-animation">
+                Check Customer Status
+              </button>
+            </div>
+            {this.state.status && (
+              <div className="verification-status">
+                Current Status: {this.state.status}
+            </div>
+          )}
+          </fieldset>
         </div>
       </div>
     );

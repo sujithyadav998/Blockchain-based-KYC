@@ -978,10 +978,16 @@
       "links": {},
       "address": "0xF2006a7992E00A7b014132aF1d8E3D95Cfe8Cd9C",
       "transactionHash": "0x6f55e4a8dc2d810cdac5d0350da777b940f6f05d0ca43fee62977f414e14287d"
+    },
+    "1750071479951": {
+      "events": {},
+      "links": {},
+      "address": "0x6062d5Dab15783dD76F1e591b6f135718472f818",
+      "transactionHash": "0x146b0a7359d1f9a98161dbfb3fa2cbc8c2daa06cee4d428300f82a4a606ff1c2"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-04-14T11:35:24.239Z",
+  "updatedAt": "2025-06-16T13:37:30.630Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
